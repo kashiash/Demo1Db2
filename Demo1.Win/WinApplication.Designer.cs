@@ -41,8 +41,8 @@
             this.validationModule = new DevExpress.ExpressApp.Validation.ValidationModule();
             this.validationWindowsFormsModule = new DevExpress.ExpressApp.Validation.Win.ValidationWindowsFormsModule();
             this.securityStrategyComplex1 = new DevExpress.ExpressApp.Security.SecurityStrategyComplex();
-            this.securityModule1 = new DevExpress.ExpressApp.Security.SecurityModule();
             this.authenticationStandard1 = new DevExpress.ExpressApp.Security.AuthenticationStandard();
+            this.securityModule1 = new DevExpress.ExpressApp.Security.SecurityModule();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // cloneObjectModule
@@ -81,7 +81,7 @@
             this.securityStrategyComplex1.AllowAnonymousAccess = false;
             this.securityStrategyComplex1.AssociationPermissionsMode = DevExpress.ExpressApp.Security.AssociationPermissionsMode.Manual;
             this.securityStrategyComplex1.Authentication = this.authenticationStandard1;
-            this.securityStrategyComplex1.PermissionsReloadMode = DevExpress.ExpressApp.Security.PermissionsReloadMode.NoCache;
+            this.securityStrategyComplex1.PermissionsReloadMode = DevExpress.ExpressApp.Security.PermissionsReloadMode.CacheOnFirstAccess;
             this.securityStrategyComplex1.RoleType = typeof(DevExpress.Persistent.BaseImpl.PermissionPolicy.PermissionPolicyRole);
             this.securityStrategyComplex1.UserType = typeof(JKXAF.Module.BusinessObjects.Employee);
             // 
