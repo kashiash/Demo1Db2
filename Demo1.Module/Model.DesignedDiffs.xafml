@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application Title="Demo1">
+  <Options>
+    <LayoutManagerOptions RequiredFieldMark="*" />
+  </Options>
+  <SchemaModules>
+    <SchemaModule Name="CloneObjectModule" Version="19.2.7.0" IsNewNode="True" />
+    <SchemaModule Name="SchedulerModuleBase" Version="19.2.7.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="19.2.7.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views>
+    <ListView Id="Customer_ListView">
+      <Columns>
+        <ColumnInfo Id="Consultant_DeratmenTitle" PropertyName="Consultant.Department.Title" Width="70" Index="8" IsNewNode="True" />
+        <ColumnInfo Id="Consultant_UserName" PropertyName="Consultant.UserName" Width="70" Index="8" IsNewNode="True" />
+      </Columns>
+    </ListView>
+    <ListView Id="Invoice_ListView">
+      <Columns>
+        <ColumnInfo Id="Klient_Consulatant" PropertyName="Klient.Consultant.UserName" Width="70" Index="4" IsNewNode="True" />
+        <ColumnInfo Id="Klient_Consulatant_DepTitle" PropertyName="Klient.Consultant.Department.Title" Width="70" Index="4" IsNewNode="True" />
+      </Columns>
+    </ListView>
+  </Views>
+</Application>
