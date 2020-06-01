@@ -17,6 +17,7 @@ namespace JKXAF.Module.BusinessObjects
 		{ }
 
 
+        string aAA;
         string uwagi;
         decimal cena;
         VATRate stawkaVAT;
@@ -59,7 +60,7 @@ namespace JKXAF.Module.BusinessObjects
             get => cena;
             set => SetPropertyValue(nameof(Cena), ref cena, value);
         }
-        
+
         [Size(SizeAttribute.Unlimited)]
         public string Uwagi
         {
@@ -67,5 +68,12 @@ namespace JKXAF.Module.BusinessObjects
             set => SetPropertyValue(nameof(Uwagi), ref uwagi, value);
         }
 
+        
+        [Size(SizeAttribute.DefaultStringMappingFieldSize)]
+        public string AAA
+        {
+            get => aAA;
+            set => SetPropertyValue(nameof(AAA), ref aAA, value);
+        }
     }
 }

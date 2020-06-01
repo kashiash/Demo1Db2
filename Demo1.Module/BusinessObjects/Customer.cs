@@ -27,6 +27,7 @@ namespace JKXAF.Module.BusinessObjects
 
 
 
+        string test2;
         Employee consultant;
         int terminPlatnosci;
         string miejscowosc;
@@ -107,6 +108,14 @@ namespace JKXAF.Module.BusinessObjects
             set => SetPropertyValue(nameof(Consultant), ref consultant, value);
         }
 
+
+        
+        [Size(SizeAttribute.DefaultStringMappingFieldSize)]
+        public string Test2
+        {
+            get => test2;
+            set => SetPropertyValue(nameof(Test2), ref test2, value);
+        }
 
         [XafDisplayName("Kontakty")]
         [Association("Klient-Kontakty"), DevExpress.Xpo.Aggregated]

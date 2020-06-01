@@ -38,8 +38,13 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bogus, Version=29.0.1.0, Culture=neutral, PublicKeyToken=fa1bb3f3f218129a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bogus.29.0.1\lib\net40\Bogus.dll</HintPath>
+    <Reference Include="Bogus, Version=29.0.2.0, Culture=neutral, PublicKeyToken=fa1bb3f3f218129a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bogus.29.0.2\lib\net40\Bogus.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.ExpressApp.Security.v19.2, Version=19.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.ExpressApp.Security.Xpo.v19.2, Version=19.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Sparkline.v19.2.Core">
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="DevExpress.Dashboard.v19.2.Core">
       <SpecificVersion>False</SpecificVersion>
@@ -104,6 +109,15 @@
     <Reference Include="DevExpress.Xpo.v19.2">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="DevExpress.Charts.v19.2.Core">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v19.2">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v19.2">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="DevExpress.XtraReports.v19.2">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -141,17 +155,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessObjects\Faktura.cs" />
-    <Compile Include="BusinessObjects\Klient.cs" />
-    <Compile Include="BusinessObjects\Kontakt.cs" />
-    <Compile Include="BusinessObjects\Kraj.cs" />
-    <Compile Include="BusinessObjects\PozycjaFaktury.cs" />
-    <Compile Include="BusinessObjects\Produkt.cs" />
-    <Compile Include="BusinessObjects\Spotkanie.cs" />
-    <Compile Include="BusinessObjects\Stanowisko.cs" />
-    <Compile Include="BusinessObjects\StawaVAT.cs" />
-    <Compile Include="BusinessObjects\Waluta.cs" />
-    <Compile Include="BusinessObjects\Wplata.cs" />
+    <Compile Include="BusinessObjects\Department.cs" />
+    <Compile Include="BusinessObjects\Employee.cs" />
+    <Compile Include="BusinessObjects\EmployeeTask.cs" />
+    <Compile Include="BusinessObjects\Invoice.cs" />
+    <Compile Include="BusinessObjects\Customer.cs" />
+    <Compile Include="BusinessObjects\Contact.cs" />
+    <Compile Include="BusinessObjects\Country.cs" />
+    <Compile Include="BusinessObjects\InvoiceItem.cs" />
+    <Compile Include="BusinessObjects\Product.cs" />
+    <Compile Include="BusinessObjects\Meeting.cs" />
+    <Compile Include="BusinessObjects\JobTitle.cs" />
+    <Compile Include="BusinessObjects\VATRate.cs" />
+    <Compile Include="BusinessObjects\Currency.cs" />
+    <Compile Include="BusinessObjects\Payment.cs" />
+    <Compile Include="Controllers\HideProtectedContentController.cs" />
     <Compile Include="Controllers\KlientViewController.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -166,6 +184,7 @@
       <DependentUpon>Module.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\DataGeneratorHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controllers\KlientViewController.resx">
@@ -175,7 +194,6 @@
     <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BusinessObjects\ReadMe.txt" />
     <None Include="Controllers\ReadMe.txt" />
     <None Include="DatabaseUpdate\ReadMe.txt" />
     <None Include="Images\ReadMe.txt" />

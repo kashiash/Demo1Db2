@@ -114,6 +114,21 @@ namespace JKXAF.Module.DatabaseUpdate
                 managerMary.Roles.Add(GetManagerRole());
                 managerMary.Save();
             }
+
+            //Brian is a manager of another department.  
+            Employee subAdminBrian = ObjectSpace.FindObject<Employee>(CriteriaOperator.Parse("UserName == 'Brian'"));
+            if (subAdminBrian == null)
+            {
+                subAdminBrian = ObjectSpace.CreateObject<Employee>();
+                subAdminBrian.UserName = "Brian";
+                subAdminBrian.FirstName = "Brian";
+                subAdminBrian.LastName = "Tellinson";
+                subAdminBrian.IsActive = true;
+                subAdminBrian.SetPassword(string.Empty);
+                subAdminBrian.Department = supDepartment;
+                subAdminBrian.Roles.Add(GetDepartmentAdminRole());
+                subAdminBrian.Save();
+            }
             //Joe is an ordinary user within the Mary's department.
             Employee userJoe = ObjectSpace.FindObject<Employee>(CriteriaOperator.Parse("UserName == 'Joe'"));
             if (userJoe == null)
@@ -128,6 +143,22 @@ namespace JKXAF.Module.DatabaseUpdate
                 userJoe.Roles.Add(GetUserRole());
                 userJoe.Save();
             }
+
+            //Silvia is an accountant user within the Mary's department. can Edit Invoices.
+            Employee userSilvia = ObjectSpace.FindObject<Employee>(CriteriaOperator.Parse("UserName == 'Silvia'"));
+            if (userSilvia == null)
+            {
+                userSilvia = ObjectSpace.CreateObject<Employee>();
+                userSilvia.UserName = "Silvia";
+                userSilvia.FirstName = "Silvia";
+                userSilvia.LastName = "Lolobrigida";
+                userSilvia.IsActive = true;
+                userSilvia.SetPassword(string.Empty);
+                userSilvia.Department = supDepartment;
+                userSilvia.Roles.Add(GetAccountantRole());
+                userSilvia.Save();
+            }
+
             Employee userJason = ObjectSpace.FindObject<Employee>(CriteriaOperator.Parse("UserName == 'Joe'"));
             if (userJoe == null)
             {
@@ -310,6 +341,81 @@ namespace JKXAF.Module.DatabaseUpdate
                 
             }
             return managerRole;
+        }
+
+
+        private PermissionPolicyRole GetDepartmentAdminRole()
+        {
+            PermissionPolicyRole deptAdminRole = ObjectSpace.FindObject<PermissionPolicyRole>(new BinaryOperator("Name", "Department administrator"));
+            if (deptAdminRole == null)
+            {
+                deptAdminRole = ObjectSpace.CreateObject<PermissionPolicyRole>();
+                deptAdminRole.Name = "Department administrator";
+
+                deptAdminRole.AddNavigationPermission("Application/NavigationItems/Items/Default/Items/MyDetails", SecurityPermissionState.Allow);
+                deptAdminRole.AddNavigationPermission("Application/NavigationItems/Items/Default/Items/Department_ListView", SecurityPermissionState.Allow);
+                deptAdminRole.AddNavigationPermission("Application/NavigationItems/Items/Default/Items/Employee_ListView", SecurityPermissionState.Allow);
+
+
+
+                deptAdminRole.AddObjectPermission<Department>(SecurityOperations.FullObjectAccess, "Employees[Oid=CurrentUserId()]", SecurityPermissionState.Allow);
+
+                deptAdminRole.SetTypePermission<Employee>(SecurityOperations.Create, SecurityPermissionState.Allow);
+                deptAdminRole.AddObjectPermission<Employee>(SecurityOperations.FullObjectAccess, "IsNull(Department) || Department.Employees[Oid=CurrentUserId()]", SecurityPermissionState.Allow);
+
+                deptAdminRole.AddObjectPermission<PermissionPolicyRole>(SecurityOperations.Read, "Contains([Name], 'dept.')", SecurityPermissionState.Allow);
+                deptAdminRole.AddMemberPermission<Employee>(SecurityOperations.Read, "Department", null, SecurityPermissionState.Allow);
+
+                deptAdminRole.SetTypePermission<Department>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                deptAdminRole.SetTypePermission<InvoiceItem>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                deptAdminRole.SetTypePermission<Product>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                deptAdminRole.AddObjectPermission<Invoice>(SecurityOperations.ReadWriteAccess, "[Klient] Is Null Or [Klient.Consultant] Is Null Or [Klient.Consultant.Department.Employees][[Oid] = CurrentUserId()]", SecurityPermissionState.Allow);
+
+                deptAdminRole.AddObjectPermission<Customer>(SecurityOperations.ReadWriteAccess, "[Consultant] Is Null Or [Consultant.Department.Employees][[Oid] = CurrentUserId()]", SecurityPermissionState.Allow);
+
+
+
+            }
+            return deptAdminRole;
+        }
+        private PermissionPolicyRole GetAccountantRole()
+        {
+            PermissionPolicyRole role = ObjectSpace.FindObject<PermissionPolicyRole>(new BinaryOperator("Name", "Accountants"));
+            if (role == null)
+            {
+                role = ObjectSpace.CreateObject<PermissionPolicyRole>();
+                role.Name = "Accountants";
+
+                role.AddNavigationPermission("Application/NavigationItems/Items/Default/Items/MyDetails", SecurityPermissionState.Allow);
+                role.AddNavigationPermission("Application/NavigationItems/Items/Default/Items/Department_ListView", SecurityPermissionState.Allow);
+                role.AddNavigationPermission("Application/NavigationItems/Items/Default/Items/Employee_ListView", SecurityPermissionState.Allow);
+
+                role.AddNavigationPermission("Application/NavigationItems/Items/Default/Items/Customer_ListView", SecurityPermissionState.Allow);
+                role.AddNavigationPermission("Application/NavigationItems/Items/Default/Items/Invoice_ListView", SecurityPermissionState.Allow);
+
+
+                role.AddObjectPermission<Department>(SecurityOperations.Read, "Employees[Oid=CurrentUserId()]", SecurityPermissionState.Allow);
+
+                role.SetTypePermission<Employee>(SecurityOperations.Create, SecurityPermissionState.Allow);
+                role.AddObjectPermission<Employee>(SecurityOperations.FullObjectAccess, "IsNull(Department) || Department.Employees[Oid=CurrentUserId()]", SecurityPermissionState.Allow);
+
+                role.SetTypePermission<EmployeeTask>(SecurityOperations.Create, SecurityPermissionState.Allow);
+                role.AddObjectPermission<EmployeeTask>(SecurityOperations.FullObjectAccess,
+                    "IsNull(AssignedTo) || IsNull(AssignedTo.Department) || AssignedTo.Department.Employees[Oid=CurrentUserId()]", SecurityPermissionState.Allow);
+
+                role.SetTypePermission<PermissionPolicyRole>(SecurityOperations.Read, SecurityPermissionState.Allow);
+
+                role.SetTypePermission<Department>(SecurityOperations.Read, SecurityPermissionState.Allow);
+              //  role.SetTypePermission<Invoice>(SecurityOperations.Create, SecurityPermissionState.Allow);
+                role.SetTypePermission<InvoiceItem>(SecurityOperations.FullObjectAccess, SecurityPermissionState.Allow);
+                role.SetTypePermission<Product>(SecurityOperations.Read, SecurityPermissionState.Allow);
+
+                role.SetTypePermission<Customer>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role.AddObjectPermission<Invoice>(SecurityOperations.FullObjectAccess, "[Klient] Is Null Or [Klient.Consultant] Is Null Or [Klient.Consultant.Department.Employees][[Oid] = CurrentUserId()]", SecurityPermissionState.Allow);
+                role.AddObjectPermission<Customer>(SecurityOperations.FullObjectAccess, "[Consultant] Is Null Or [Consultant.Department.Employees][[Oid] = CurrentUserId()]", SecurityPermissionState.Allow);
+            //    role.AddObjectPermission<Empl>(SecurityOperations.FullObjectAccess, "[Consultant] Is Null Or [Consultant.Department.Employees][[Oid] = CurrentUserId()]", SecurityPermissionState.Allow);
+            }
+            return role;
         }
 
     }
